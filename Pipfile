@@ -10,6 +10,7 @@ xlwt = "*"
 weasyprint = "*"
 gunicorn = "*"
 django-heroku = "*"
+django-filter = "*"
 
 [dev-packages]
 
