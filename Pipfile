@@ -9,6 +9,7 @@ six = "*"
 xlwt = "*"
 weasyprint = "*"
 gunicorn = "*"
+django-heroku = "*"
 
 [dev-packages]
 
