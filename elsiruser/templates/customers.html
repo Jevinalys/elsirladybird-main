@@ -39,95 +39,104 @@
 
             </div>
 
-
-            <div class="bg-light text-center rounded p-4 col-sm-9">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Customers</h6>
-                        <a href="{% url 'customer-excel' %}" class="btn btn-primary">Download</a>
+            <div class="container-fluid pt-4 px-4">
+                
+                <div class="bg-light text-center rounded p-4 col-12 col-md-9 col-lg-6">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                            <h6 class="mb-0">Customers</h6>
+                            <a href="{% url 'customer-excel' %}" class="btn btn-primary">Download</a>
                     </div>
-
-                    <div class="app-table" >
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Name1</th>
-                                    <th scope="col">Name2</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Debt</th>
-                                    <th scope="col">Points</th>
-                                    <th scope="col">Action</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody">
-                                {% for customer in page_obj %}
-                                <tr>
-                                    <td>{{customer.first_name}}</td>
-                                    <td>{{customer.second_name}}</td>
-                                    <td>{{customer.phone}}</td>
-                                    <td>{{customer.email_address}}</td>
-                                    <td>{{customer.debt}}</td>
-                                    <td>{{customer.loyalty_points}}</td>
-                                    <td><a class="btn btn-sm btn-primary" id="addpayment" href="{% url 'addSales' customer.id %}" >Pay</a></td>
-                                    <!--<td> <input type="button" value="Pay" class="btn btn-sm btn-success" data-sid="{{customer.id}}"></td>-->
-                                       <td> <input type="button" value="Edit" class="btn btn-warning btn-sm btn-edit" data-sid="{{customer.id}}"></td>
-                                </tr>
-        
-                                {% endfor %}
-                            </tbody>
-                        </table>
-
-                    </div>
-
-
-                    <div class="table-output">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Name1</th>
-                                    <th scope="col">Name2</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Debt</th>
-                                    <th scope="col">Points</th>
-                                    <th scope="col">Action</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-body" id="tbody">
-
-                            </tbody>
-        
-                        </table>
     
-                    </div>
+                        <div class="app-table" >
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name1</th>
+                                            <th scope="col">Name2</th>
+                                            <th scope="col">Phone</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Debt</th>
+                                            <th scope="col">Points</th>
+                                            <th scope="col">Action</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody">
+                                        {% for customer in page_obj %}
+                                        <tr>
+                                            <td>{{customer.first_name}}</td>
+                                            <td>{{customer.second_name}}</td>
+                                            <td>{{customer.phone}}</td>
+                                            <td>{{customer.email_address}}</td>
+                                            <td>{{customer.debt}}</td>
+                                            <td>{{customer.loyalty_points}}</td>
+                                            <td><a class="btn btn-sm btn-primary" id="addpayment" href="{% url 'addSales' customer.id %}" >Pay</a></td>
+                                            <!--<td> <input type="button" value="Pay" class="btn btn-sm btn-success" data-sid="{{customer.id}}"></td>-->
+                                               <td> <input type="button" value="Edit" class="btn btn-warning btn-sm btn-edit" data-sid="{{customer.id}}"></td>
+                                        </tr>
+                
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
 
-                    <p class="no-results" style="display: none;">No results </p>
+                            </div>
 
-                    <div class="pagination-container pt-2">
-                        <div class="row">
+                        </div>
+    
+    
+                        <div class="table-output">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name1</th>
+                                        <th scope="col">Name2</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Debt</th>
+                                        <th scope="col">Points</th>
+                                        <th scope="col">Action</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-body" id="tbody">
+    
+                                </tbody>
             
-                            <div class="col-md-9">
-                                Showing page {{page_obj.number}} of {{ page_obj.paginator.num_pages }}
-                              </div>
-                              <ul class="pagination align-right float-right mr-auto , col-md-3">
-                                {% if page_obj.has_previous %}
-                                <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}><a class="page-link" href="?page=1">&laquo; 1</a></li>
-                                <li class="page-item"> <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
-                                {% endif %}
-                          
-                                {% if page_obj.has_next %}
-                                <li class="page-item"> <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
-                                <li class="page-item"> <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages}} &raquo;</a></li>
-                                {% endif %}
-                                </ul>
+                            </table>
         
                         </div>
+    
+                        <p class="no-results" style="display: none;">No results </p>
+    
+                        <div class="pagination-container pt-2">
+                            <div class="row">
+                
+                                <div class="col-md-9">
+                                    Showing page {{page_obj.number}} of {{ page_obj.paginator.num_pages }}
+                                  </div>
+                                  <ul class="pagination align-right float-right mr-auto , col-md-3">
+                                    {% if page_obj.has_previous %}
+                                    <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}><a class="page-link" href="?page=1">&laquo; 1</a></li>
+                                    <li class="page-item"> <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                                    {% endif %}
+                              
+                                    {% if page_obj.has_next %}
+                                    <li class="page-item"> <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                                    <li class="page-item"> <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages}} &raquo;</a></li>
+                                    {% endif %}
+                                    </ul>
             
-                    </div>
+                            </div>
+                
+                        </div>
+    
+                </div>
+    
+
 
             </div>
+
 
 
     <!-- <div class="container-fluid pt-4 px-4">
