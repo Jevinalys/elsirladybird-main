@@ -35,8 +35,8 @@ searchField.addEventListener("keyup", (e) => {
           data.forEach((item) => {
             tbody.innerHTML += `
                 <tr>
-                <td>${item.phone}</td>
                 <td>${item.services}</td>
+                <td>${item.phone}</td>
                 <td>${item.amount}</td>
                 <td>${item.date_paid}</td>
                 <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
