@@ -1,6 +1,50 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
+
+    const customerSaveBtn = document.querySelector('#btnsave')
+    const phonefeedBackArea = document.querySelector('.phonefeedback')
+    const phoneNoSuccessOutput = document.querySelector(".phoneNoSuccessOutput")
+    const feedBackArea = document.querySelector('.invalid_feedback');
+
+
+    $('#phoneid').keyup(function () {
+        
+        const phoneNoVal = $("#phoneid").val();
+
+        phoneNoSuccessOutput.style.display = "block";
+        phoneNoSuccessOutput.textContent = `Checking  ${phoneNoVal}`;
+
+        phoneid.classList.remove("is-invalid");
+        phonefeedBackArea.style.display = "none";
+
+        mydata = { phone: phoneNoVal }
+
+        if (phoneNoVal.length > 0) {
+
+            $.ajax({
+                url: "{% url 'customerphoneValidation' %}",
+                method: "POST",
+                data: mydata,
+
+                success: function (data) {
+
+                    phoneNoSuccessOutput.style.display = "none";
+                    if (data.phone_error) {
+                        phoneid.classList.add("is-invalid");
+                        phonefeedBackArea.style.display = "block";
+                        phonefeedBackArea.innerHTML = `<p>${data.phone_error}</p>`;
+                        customerSaveBtn.disabled = true;
+                    }else{
+                        customerSaveBtn.removeAttribute("disabled");
+                    }
+                },
+            })
+        }
+    })
+
+
+
     // Save data
     $('#btnsave').click(function () {
         output = "";

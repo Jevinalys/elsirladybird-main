@@ -78,6 +78,18 @@ def phoneValidation(request):
         return JsonResponse({'phone_valid': True})
     
 @csrf_exempt
+def customerphoneValidation(request):
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone')
+        if len(phone_number)<10:
+            return JsonResponse ({'phone_error': 'phone number cannot be less than 10 digits'})
+        if len(phone_number)>12:
+            return JsonResponse ({'phone_error': 'phone number cannot be more than 12 characters.'})
+        if Customer.objects.filter(phone=phone_number).exists():
+            return JsonResponse({'phone_error': 'sorry phone number in use,choose another one '})
+        return JsonResponse({'phone_valid': True})
+    
+@csrf_exempt
 def emailValidation(request):
     if request.method == 'POST':
         email = request.POST.get('email')

@@ -10,6 +10,7 @@ urlpatterns = [
     path('firstnameValidation/',views.firstnameValidation, name="firstnameValidation"),
     path('secondnameValidation/',views.secondnameValidation, name="secondnameValidation"),
     path('phoneValidation/',views.phoneValidation, name="phoneValidation"),
+    path('customerphoneValidation/',views.customerphoneValidation, name="customerphoneValidation"),
     path('emailValidation/',views.emailValidation, name="emailValidation"),
     path('login/',views.login_user, name="login"),
     path('logout/',views.logout_user, name="logout"),
