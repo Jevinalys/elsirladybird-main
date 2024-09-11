@@ -70,8 +70,8 @@
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-line fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Today Sale</p>
-                                <h6 class="mb-0">{{ daily_sales }}</h6>
+                                <h6 class="mb-2">Total Sale Today</h6>
+                                <p class="mb-0">KShs. {{ total_sales_today }}</p>
                             </div>
                         </div>
                     </div>
@@ -79,8 +79,8 @@
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-bar fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Monthly Sales</p>
-                                <h6 class="mb-0">{{ monthly_sales }}</h6>
+                                <h6 class="mb-2">Customers Today</h6>
+                                <p class="mb-0">{{ unique_customers_today }}</p>
                             </div>
                         </div>
                     </div>
@@ -88,8 +88,8 @@
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-users fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Total Customers</p>
-                                <h6 class="mb-0">{{ customers }}</h6>
+                                <h6 class="mb-2">{{dispmonth}} Sales</h6>
+                                <p class="mb-0">{{ current_month_sales }}</p>
                             </div>
                         </div>
                     </div>
@@ -150,7 +150,7 @@
 
 
             <!-- Recent Sales Start -->
-            <div class="container-fluid pt-4 px-4">
+            <!--<div class="container-fluid pt-4 px-4">
                 <div class="bg-light text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h6 class="mb-0">Recent Sales</h6>
@@ -159,9 +159,9 @@
                     <div class="table-responsive">
                         <table class="table text-start align-middle table-bordered table-hover mb-0">
                             <thead>
-                                <tr class="text-dark">
+                                <tr class="text-dark">-->
                                     <!--<th scope="col"><input class="form-check-input" type="checkbox"></th>-->
-                                    <th scope="col">Customer</th>
+                                    <!--<th scope="col">Customer</th>
                                     <th scope="col">Phone</th>
                                     <th scope="col">Service</th>
                                     <th scope="col">Amount</th>
@@ -170,15 +170,15 @@
                             </thead>
                             <tbody>
                                 {% for sale in page_obj %}
-                                <tr>
+                                <tr>-->
                                     <!--<td><input class="form-check-input" type="checkbox"></td>-->
-                                    <td>{{sale.customer_name}}</td>
+                                    <!--<td>{{sale.customer_name}}</td>
                                     <td>{{sale.phone}}</td>
                                     <td>{{sale.services}}</td>
                                     <td>{{sale.amount}}</td>
-                                    <td>{{sale.date_paid}}</td>
+                                    <td>{{sale.date_paid}}</td>-->
                                     <!--<td><a class="btn btn-sm btn-primary" href="">Detail</a></td>-->
-                                </tr>
+                               <!-- </tr>
                                 {% endfor %}
 
                             </tbody>
@@ -210,7 +210,7 @@
                     </div>
         
                 </div>
-            </div>
+            </div>-->
 
             
             <!-- Recent Sales End -->

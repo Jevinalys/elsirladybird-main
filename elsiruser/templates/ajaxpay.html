@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
     // Select Service
@@ -20,7 +20,56 @@
            
         },
     })
-})
+})-->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        function calculatePrice() {
+            let nailsNo = $('#nailsNo').val();
+
+            let selectedServices = [];
+            $('input[name="services[]"]:checked').each(function () {
+                selectedServices.push($(this).val());  // Add value of each checked checkbox to the array
+            });
+
+            let mydata = { servicenames: selectedServices, selectedNails: nailsNo };
+
+            $.ajax({
+                url: "{% url 'updateprice' %}",  // Your URL for updating price
+                method: "POST",
+                data: mydata,
+
+                success: function (data) {
+                    // Assuming the response contains a `service_price` field
+                    $("#serviceprice").val(data.service_price);
+                    console.log("Service price updated:", data.service_price);
+                },
+
+                error: function (xhr, status, error) {
+                    console.log("AJAX error:", error);
+                }
+            });
+
+
+
+        }
+
+        //Listen for changes in Select field
+        $('#nailsNo').change(function () {
+            calculatePrice(); // Trigger when the number of nails changes
+        });
+
+        // Listen for changes in checkbox selection
+        $('input[name="services[]"]').change(function () {
+
+            calculatePrice(); // Trigger when any service checkbox is changed
+        });
+
+
+    });
 
 
 </script>

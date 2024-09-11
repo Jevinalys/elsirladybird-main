@@ -275,3 +275,12 @@
     background: var(--dark);
     border-color: var(--primary);
 }
+
+/*#services-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+#services-checkbox-group .form-check {
+    flex: 0 0 50%; /* Each item will take 50% of the width 
+    padding: 5px 0;
+}*/

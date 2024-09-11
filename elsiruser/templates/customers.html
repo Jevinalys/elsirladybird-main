@@ -59,8 +59,6 @@
                                             <th scope="col">Name2</th>
                                             <th scope="col">Phone</th>
                                             <th scope="col">Email</th>
-                                            <th scope="col">Debt</th>
-                                            <th scope="col">Points</th>
                                             <th scope="col">Action</th>
                                             <th scope="col"></th>
                                         </tr>
@@ -72,8 +70,6 @@
                                             <td>{{customer.second_name}}</td>
                                             <td>{{customer.phone}}</td>
                                             <td>{{customer.email_address}}</td>
-                                            <td>{{customer.debt}}</td>
-                                            <td>{{customer.loyalty_points}}</td>
                                             <td><a class="btn btn-sm btn-primary" id="addpayment" href="{% url 'addSales' customer.id %}" >Pay</a></td>
                                             <!--<td> <input type="button" value="Pay" class="btn btn-sm btn-success" data-sid="{{customer.id}}"></td>-->
                                                <td> <input type="button" value="Edit" class="btn btn-warning btn-sm btn-edit" data-sid="{{customer.id}}"></td>

@@ -34,15 +34,15 @@ searchField.addEventListener("keyup", (e) => {
           noResults.style.display = "none";
           data.forEach((item) => {
             tbody.innerHTML += `
+
                 <tr>
                 <td>${item.first_name}</td>
                 <td>${item.second_name}</td>
                 <td>${item.phone}</td>
                 <td>${item.email_address}</td>
-                <td>${item.debt}</td>
-                <td>${item.loyalty_points}</td>
                 <td><a class="btn btn-sm btn-primary" id="addpayment" href="/addSales/${item.id}">Pay</a></td>
-                <td> <input type="button" value="Edit" class="btn btn-warning btn-sm btn-edit" data-sid="{{item.id}}"></td>
+                <td><a class="btn btn-sm btn-secondary" value="Edit" id="addpayment" href="/editcustomer/${item.id}">Edit</a></td>
+            
                 </tr>`;
           });
         }
@@ -53,3 +53,5 @@ searchField.addEventListener("keyup", (e) => {
     paginationContainer.style.display = "block";
   }
 });
+
+

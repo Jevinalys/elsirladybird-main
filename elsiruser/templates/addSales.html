@@ -7,10 +7,10 @@
 <div class="content">
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-    <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
-      <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+    <a href="{% url 'dashboard' %}" class="navbar-brand d-flex d-lg-none me-4">
+      <h2 class="text-primary mb-0"><i class="fa fa-home"></i></h2>
     </a>
-    <a href="#" class="sidebar-toggler flex-shrink-0">
+    <a href="{% url 'dashboard' %}" class="sidebar-toggler flex-shrink-0">
       <i class="fa fa-bars"></i>
     </a>
     <form class="d-none d-md-flex ms-4">
@@ -25,48 +25,117 @@
 
       <div class="card">
         <div class="card-body">
+          <p>Customer Name: {{customer}} &nbsp &nbsp Customer No. {{customer.phone}} </p>
           <div class="row g-2">
             <div class="col-sm-4 col-xl-3">
-                  <div>
-                      <h4 class="text-center alert alert-danger ">Debt : {{customer.debt}}</h4>
-                  </div>
-              
+              <div>
+                <h4 class="text-center alert alert-danger ">Debt : {{customer.debt}}</h4>
+              </div>
+
             </div>
 
             <div class="col-sm-4 col-xl-3">
               <div>
-                  <h4 class="text-center alert alert-info ">Points : {{customer.loyalty_points}}</h4>
+                <h4 class="text-center alert alert-info ">Points : {{customer.loyalty_points}}</h4>
               </div>
-          
+
             </div>
 
             <div class="col-sm-4 col-xl-3">
               <div>
-                  <a href="{% url 'payDebt' customer.id %}"><h4 class="text-center alert alert-warning">Pay Debt</h4></a>
+                <a href="{% url 'payDebt' customer.id %}">
+                  <h4 class="text-center alert alert-warning">Pay Debt</h4>
+                </a>
               </div>
-          
+
             </div>
 
             <div class="col-sm-4 col-xl-3">
               <div>
-                  <a href="{% url 'redeemPoints' customer.id %}"><h4 class="text-center alert alert-danger">Redeem Points</h4></a>
+                <a href="{% url 'redeemPoints' customer.id %}">
+                  <h4 class="text-center alert alert-danger">Redeem Points</h4>
+                </a>
               </div>
-          
+
             </div>
 
           </div>
-           
+
           <form action="{% url 'addSales' customer.id %}" method="post">
             {% csrf_token %}
-            <div class="form-group">
+            <!--<div class="form-group">
               <label for="">Customer Name</label>
               <input type="text" class="form-control form-control-sm" name="customerName" value="{{customer}}" readonly/>
 
               <div class="form-group">
                 <label for="">Phone Number</label>
-                <input type="text" class="form-control form-control-sm" name="customerName" value="{{customer.phone}}" readonly />
+                <input type="text" class="form-control form-control-sm" name="customerName" value="{{customer.phone}}" readonly />-->
 
-                <div class="form-group">
+            <!--<div class="form-group">
+                  <label for="services">Services</label>
+                  <select class="form-control" id="serviceID" name="services[]" multiple>
+                      {% for services in services %}
+                      <option name="services" id="selectedservice" data-servid="{{services.id}}" value="{{ services.service_name }}">
+                          {{services.service_name}}
+                      </option>
+                      {% endfor %}
+                  </select>
+              </div>-->
+
+            <div class="form-group">
+              <label for="services">
+                <h3>Select Service</h3>
+              </label>
+              <div id="services-checkbox-group" class="row">
+                {% for services in services %}
+                <div class="col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="service{{ services.id }}" name="services[]"
+                      value="{{ services.service_name }}">
+                    <label class="form-check-label" for="service{{ services.id }}">
+                      {{ services.service_name }}
+                    </label>
+                  </div>
+                </div>
+                {% endfor %}
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">Nail Deco (No. Nails)</label>
+                    <select class="form-control" id="nailsNo" name="nails">
+                      <option id="selectednailNo" value="0">Select No. Nails</option>
+                      <option id="selectednailNo" value="20">1 </option>
+                      <option id="selectednailNo" value="40">2</option>
+                      <option id="selectednailNo" value="60">3</option>
+                      <option id="selectednailNo" value="80">4</option>
+                      <option id="selectednailNo" value="100">5</option>
+                      <option id="selectednailNo" value="120">6</option>
+                      <option id="selectednailNo" value="140">7</option>
+                      <option id="selectednailNo" value="160">8</option>
+                      <option id="selectednailNo" value="180">9</option>
+                      <option id="selectednailNo" value="200">10</option>
+                      <option id="selectednailNo" value="220">11</option>
+                      <option id="selectednailNo" value="240">12</option>
+                      <option id="selectednailNo" value="260">13</option>
+                      <option id="selectednailNo" value="280">14</option>
+                      <option id="selectednailNo" value="300">15</option>
+                      <option id="selectednailNo" value="220">16</option>
+                      <option id="selectednailNo" value="340">17</option>
+                      <option id="selectednailNo" value="360">18</option>
+                      <option id="selectednailNo" value="380">19</option>
+                      <option id="selectednailNo" value="400">20</option>
+                    </select>
+                  </div>
+
+
+                </div>
+
+              </div>
+            </div>
+
+
+
+
+            <!--<div class="form-group">
                   <label for="">Services</label>
                   <select class="form-control" id="serviceID" name="services">
                     
@@ -74,34 +143,35 @@
                     <option name="services" id="selectedservice"  data-servid="{{services.id}}" value="{{ services.service_name}}"> {{services.service_name}}</option>
                     {% endfor %}
                   </select>
-                </div>
+                </div>-->
 
-                <div class="form-group">
-                  <label for="serviceprice">Price</label>
-                  <input type="number" value="0" class="form-control form-control-sm" id="serviceprice" name="serviceprice" readonly />
+            <div class="form-group">
+              <label for="serviceprice">Price</label>
+              <input type="number" value="0" class="form-control form-control-sm" id="serviceprice" name="serviceprice"
+                readonly />
 
-                  </div>
+            </div>
 
-                  <div class="form-group">
-                    <label for="">Payment Mode</label>
-                    <select class="form-control" default="{{values.cash}}" name="payment">
+            <div class="form-group">
+              <label for="">Payment Mode</label>
+              <select class="form-control" default="{{values.cash}}" name="payment">
 
-                      <option name="payment" value="{{values.cash}}">Cash</option>
-                      <option name="payment" value="{{values.Mpesa}}">Mpesa </option>
+                <option name="payment" value="{{values.cash}}">Cash</option>
+                <option name="payment" value="{{values.Mpesa}}">Mpesa </option>
 
-                    </select>
+              </select>
 
-                  </div>
-                  <div class="form-group">
-                    <label for="">Mpesa Code</label>
-                    <input type="text" class="form-control form-control-sm" name="code" value="{{values.code}}" />
-                  </div>
-                  <div class="form-group">
-                    <label for="">Amount</label>
-                    <input type="text" class="form-control form-control-sm" name="amount" value="{{values.amount}}" />
-                  </div>
-                  <br>
-                  <input type="submit" value="Submit" class="btn btn-primary btn-primary-sm" />
+            </div>
+            <div class="form-group">
+              <label for="">Mpesa Code</label>
+              <input type="text" class="form-control form-control-sm" name="code" value="{{values.code}}" />
+            </div>
+            <div class="form-group">
+              <label for="">Amount</label>
+              <input type="text" class="form-control form-control-sm" name="amount" value="{{values.amount}}" />
+            </div>
+            <br>
+            <input type="submit" value="Submit" class="btn btn-primary btn-primary-sm" />
           </form>
         </div>
       </div>

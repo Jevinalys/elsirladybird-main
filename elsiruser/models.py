@@ -56,7 +56,10 @@ class Service(models.Model):
 
     def __str__(self):
        return self.service_name
-    
+class Sales_Services(models.Model): 
+    serviceName = models.CharField(max_length=266)
+    servicePrice = models.IntegerField(null=True)
+    datePaid = models.DateTimeField(default=timezone.now)
 
 class Sale(models.Model):
     customer_name = models.ForeignKey(Customer, on_delete = models.PROTECT)

@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from .models import *
 import datetime
+import ast
 from django.utils import timezone
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -230,14 +231,36 @@ def dashboard(request):
     paginator = Paginator(sales,5)
     page_number = request.GET.get('page')
     page_obj =Paginator.get_page(paginator, page_number)
+
+    month = timezone.now()
+    dispmonth= month.strftime("%B")
+
+    today = timezone.now().date()
     
+    #Daily Sales Price
+    # Filter sales for the current day and calculate the total sales
+    total_sales_today = Sale.objects.filter(date_paid__date=today) \
+                                     .aggregate(total_sales=Sum('amount'))['total_sales'] or 0
     
-    #Daily Sales
-    for sales.date_paid in sales:
-        today = str(timezone.now())
-        todaySales=str(sales.date_paid)
-        if todaySales[:11] == today[:11]:
-            daily_sales +=1
+    #Daily Total Customers
+    unique_customers_today = Sale.objects.filter(date_paid__date=today) \
+                                          .values('customer_name') \
+                                          .distinct() \
+                                          .count() or 0
+    
+
+
+
+
+    #Get the current date and calculate the start and end of the current month:
+    now = timezone.now()
+    start_of_month = now.replace(day=1)
+    end_of_month = (start_of_month + timezone.timedelta(days=32)).replace(day=1)
+
+    #Write the query to calculate the total sales for the current month:
+    current_month_sales = Sale.objects.filter(
+    date_paid__gte=start_of_month,
+    date_paid__lt=end_of_month).aggregate(total_sales=Sum('amount'))['total_sales'] or 0
 
     #Monthly Sales
     for sales.date_paid in sales:
@@ -248,7 +271,7 @@ def dashboard(request):
             monthly_sales +=1
         
 
-    context = {'customers':customers, 'sales':sales, 'page_obj':page_obj, 'daily_sales':daily_sales,'monthly_sales':monthly_sales}
+    context = {'customers':customers, 'sales':sales, 'page_obj':page_obj, 'dispmonth':dispmonth,'current_month_sales':current_month_sales,'total_sales_today': total_sales_today, 'unique_customers_today': unique_customers_today}
     
 
     return render(request,'dashboard.html',context)
@@ -257,6 +280,10 @@ def dashboard(request):
 def sales(request):
 
     sales = Sale.objects.all().order_by('-date_paid')
+
+    for sale in sales:
+        sale.services_list = ast.literal_eval(sale.services)
+
     paginator = Paginator(sales,7)
     page_number = request.GET.get('page')
     page_obj =Paginator.get_page(paginator, page_number)
@@ -287,6 +314,11 @@ def salesrepo(request):
 
         month = timezone.now()
         dispmonth= month.strftime("%B")
+
+        #Change string list to python list
+        for sale in sales:
+
+            sale.services_list = ast.literal_eval(sale.services)
 
         #Get the current date and calculate the start and end of the current month:
         now = timezone.now()
@@ -456,7 +488,7 @@ def addSales(request,pk):
     customer = Customer.objects.get(id=pk)
     form = SalesForm(initial = {'customer_name':customer,'phone':customer.phone})
     services = Service.objects.all()
-
+    
     context = {
         'customer':customer,
         'form':form,
@@ -475,11 +507,20 @@ def addSales(request,pk):
         myamount= int(amount)
         customer_name= customer
         payment_mode = request.POST['payment']
-        services = request.POST['services']
+        services = request.POST.getlist('services[]')
         mpesa_code = request.POST['code']
         price = int(request.POST['serviceprice'])
         phone=customer.phone
-        
+
+        #Populate Sales Services
+        for service in services:
+
+            Myservice = get_object_or_404(Service, service_name=service)
+            service_price = Myservice.service_price
+    
+            Sales_Services.objects.create(serviceName=service, servicePrice=service_price)
+            
+
         if myamount > price or myamount == 0 or type(myamount) != int :
                 messages.error(
                     request, 'Invalid Amount')
@@ -540,6 +581,7 @@ def addCustomer(request):
            return redirect('customers.html')
            
        if request.method == 'POST':
+    
         form = CustomerForm(request.POST)
         if form.is_valid():
             custid = request.POST.get('customerid')
@@ -548,7 +590,7 @@ def addCustomer(request):
             phone = request.POST['phone']
             email_address = request.POST['email_address']
             if not first_name:
-                messages.error(request, 'First Na Required')
+                messages.error(request, 'First Name Required')
             
             if(custid == ''):
 
@@ -730,29 +772,50 @@ def updateService(request):
     
 @csrf_exempt
 def updateprice(request):
-    if request.method == 'POST':
-        id = request.POST.get('servid')
-        service = Service.objects.get(service_name=id)
+        if request.method == 'POST':
 
-        service_data = {'service_price':service.service_price}
-        return JsonResponse(service_data)
+            # Get the list of selected service names (from the checkboxes)
+            selected_services = request.POST.getlist('servicenames[]')  # This gets the list of selected services
+            nailsSelected = int(request.POST.get('selectedNails'))
+            
+            print(nailsSelected)
+            # Fetch all selected services from the database
+            services = Service.objects.filter(service_name__in=selected_services)
+
+            # Initialize total price (or however you want to calculate it)
+            total_price = 0
+            
+        
+            # Calculate the total price based on the selected services
+            for service in services:
+                total_price += service.service_price
+
+            total_price += nailsSelected
+            
+            #total_price= total_price + nailsSelected
+
+            # Prepare the response data with the total price
+            service_data = {'service_price': total_price}
+
+            # Return the price as JSON
+            return JsonResponse(service_data)
 
 def monthly_servicesales(request):
     todays_date = timezone.now()
     current_months = todays_date-timezone.timedelta(days=30)
-    sales = Sale.objects.filter(date_paid__gte=current_months, date_paid__lte=todays_date)
+    sales = Sales_Services.objects.filter(datePaid__gte=current_months, datePaid__lte=todays_date)
     finalrep = {}
 
     def get_services(sale):
-        return sale.services
+        return sale.serviceName
     services_list = list(set(map(get_services, sales)))
 
     def get_services_amount(services): 
         amount = 0
-        filtered_by_services = sales.filter(services=services)
+        filtered_by_services = sales.filter(serviceName=services)
     
         for item in filtered_by_services:
-            amount += item.amount
+            amount += item.servicePrice
         return amount
     
     for x in sales:
@@ -900,4 +963,39 @@ def customer_excel(request):
         response.write(output.read())
 
     return response '''
+
+
+def EditCustomer(request, id):
+    customers = Customer.objects.get(pk=id)
+    context = {
+        'customers': customers,
+        'values': customers,
+    }
+
+    if request.method == 'GET':
+        return render(request, 'editcustomer.html', context)
     
+    if request.method == 'POST':
+        name1 = request.POST['firstName']
+
+        if not name1:
+            messages.error(request, 'First Name is required')
+            return render(request, 'editcustomer.html', context)
+        
+        name2 = request.POST['secondName']
+        phone = request.POST['phone']
+        mail = request.POST['emailAddress']
+
+        if not name2:
+            messages.error(request, 'Second Name is required')
+            return render(request, 'editcustomer.html', context)
+
+        customers.first_name = name1
+        customers.second_name = name2
+        customers.phone = phone
+        customers.email_address = mail
+
+        customers.save()
+        messages.success(request, 'Customer updated  successfully')
+
+        return redirect('customers')

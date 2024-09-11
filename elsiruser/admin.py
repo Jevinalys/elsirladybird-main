@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Customer,Product,Service,Sale,Booking,Profile
+from .models import Customer,Product,Service,Sale,Booking,Profile,Sales_Services
 
 # Register your models here.
 admin.site.register(Profile)
@@ -20,6 +20,12 @@ class ProductAdmin(admin.ModelAdmin):
 class ServiceAdmin(admin.ModelAdmin):
     list_display = (
         'service_name','service_description','service_price'
+    )
+
+@admin.register(Sales_Services)
+class SalesServiceAdmin(admin.ModelAdmin):
+    list_display = (
+        'serviceName','servicePrice','datePaid'
     )
 
 @admin.register(Sale)

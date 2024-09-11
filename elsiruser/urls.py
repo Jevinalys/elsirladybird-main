@@ -34,6 +34,8 @@ urlpatterns = [
     path('customer-delete/',views.customer_delete, name="customer-delete"),
     path('service-delete/',views.service_delete, name="service-delete"),
     path('updateCustomer/',views.updateCustomer, name="updateCustomer"),
+
+    path('editcustomer/<int:id>/', views.EditCustomer, name="editcustomer"),
     path('updateprice/',views.updateprice, name="updateprice"),
     path('updateService/',views.updateService, name="updateService"),
     path('updatetime/',views.updatetime, name="updatetime"),

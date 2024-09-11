@@ -53,7 +53,7 @@
                                 {% for sale in page_obj %}
                                 <tr>
                                     <!--<td><input class="form-check-input" type="checkbox"></td>-->
-                                    <td>{{sale.services}}</td>
+                                    <td>{{ sale.services_list|join:", " }}</td>
                                     <td>{{sale.phone}}</td>
                                     <td>{{sale.amount}}</td>
                                     <td>{{sale.date_paid}}</td>

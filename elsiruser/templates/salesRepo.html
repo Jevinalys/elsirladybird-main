@@ -114,7 +114,7 @@
                                         <td>{{sale.customer_name.first_name}}</td>
                                         <td>{{sale.customer_name.second_name}}</td>
                                         <td>{{sale.phone}}</td>
-                                        <td>{{sale.services}}</td>
+                                        <td>{{sale.services_list|join:", "}}</td>
                                         <td>{{sale.amount}}</td>
                                         <td>{{sale.customer_name.debt}}</td>
                                         <td>{{sale.date_paid}}</td>
